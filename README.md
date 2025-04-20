@@ -5,12 +5,13 @@
 
 # stringwise
 
-**stringwise** is a fast and lightweight TypeScript library for comparing string similarity using bigram-based analysis. It’s ideal for fuzzy searching, intelligent suggestions, and natural language processing tasks where accuracy and performance matter.
+**stringwise** is a fast and lightweight TypeScript library for comparing string similarity using multiple algorithms like bigrams, Levenshtein, Jaro-Winkler, and Ratcliff/Obershelp. It’s ideal for fuzzy searching, intelligent suggestions, and natural language processing tasks where accuracy and performance matter.
 
 ## ✨ Why Use stringwise?
 
 - ⚡️ **Efficient and Lightweight**: Built for real-time performance in search and suggestion engines.
-- 📏 **Deterministic Similarity Score**: Uses bigram intersection for intuitive and consistent results.
+- 🧠 **Multiple Algorithms**: Choose from `default`, `levenshtein`, `jaro-winkler`, or `ratcliff-obershelp`.
+- 🎯 **Precise Similarity Control**: Use `round` option to control rating precision.
 - 🔍 **Fuzzy Matching Made Easy**: Quickly identify the best match among multiple strings.
 - 🔒 **Fully Typed**: Built with TypeScript for a safer developer experience.
 - 📦 **Modular Structure**: Ready to scale with your application needs.
@@ -34,13 +35,13 @@ yarn add stringwise
 ### Importing
 
 ```ts
-import { compareTwoStrings, findBestMatch } from "stringwise";
+import { compareTwoStrings, findBestMatch, getSimilarityFn } from "stringwise";
 ```
 
 ### Compare Two Strings
 
 ```ts
-compareTwoStrings("hello", "h3llo"); // 0.6 (example)
+compareTwoStrings("hello", "h3llo"); // e.g. 0.5
 ```
 
 ### Find Best Match
@@ -54,32 +55,60 @@ console.log(result.bestMatch);
 console.log(result.ratings);
 /*
 [
-  { target: 'halo', rating: 0.5 },
-  { target: 'hell', rating: 0.75 },
+  { target: 'halo', rating: 0.2857142857142857 },
+  { target: 'hell', rating: 0.8571428571428571 },
   { target: 'hello', rating: 1 },
-  { target: 'world', rating: 0.25 }
+  { target: 'world', rating: 0 }
 ]
 */
+```
+
+### Use with Options
+
+```ts
+const result = findBestMatch("kitten", ["sitting"], {
+  algorithm: "levenshtein",
+  round: 3,
+});
+```
+
+### Direct Algorithm Access
+
+```ts
+const sim = getSimilarityFn("jaro-winkler");
+console.log(sim("MARTHA", "MARHTA")); // ~0.9611
 ```
 
 ## 🧠 API
 
 ### `compareTwoStrings(a: string, b: string): number`
 
-Returns a similarity score between `0` and `1` based on bigram overlap.
-
-- `1` means identical (ignoring whitespace)
-- `0` means no similarity
+Returns a similarity score between `0` and `1` using bigram overlap.
 
 ---
 
-### `findBestMatch(input: string, options: string[]): BestMatchResult`
+### `findBestMatch(main: string, targets: string[], options?: FindBestMatchOptions): FindBestMatchResult`
 
 Returns an object containing:
 
 - `bestMatch`: The string with the highest similarity
 - `bestMatchIndex`: Index in the original list
 - `ratings`: All similarity scores
+
+Options:
+
+```ts
+type FindBestMatchOptions = {
+  round?: number; // Decimal places
+  algorithm?: "default" | "levenshtein" | "jaro-winkler" | "ratcliff-obershelp";
+};
+```
+
+---
+
+### `getSimilarityFn(algorithm: string): (a: string, b: string) => number`
+
+Returns the similarity function for a given algorithm name.
 
 ---
 
@@ -91,7 +120,7 @@ type MatchRating = {
   rating: number;
 };
 
-type BestMatchResult = {
+type FindBestMatchResult = {
   bestMatch: MatchRating;
   bestMatchIndex: number;
   ratings: MatchRating[];
