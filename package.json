@@ -1,0 +1,66 @@
+{
+  "name": "stringwise",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Efficient and elegant string similarity comparison using bigram analysis. Ideal for fuzzy matching, search optimization, and natural language tools.",
+  "keywords": [
+    "esm",
+    "bigram",
+    "stringwise",
+    "typescript",
+    "text analysis",
+    "fuzzy matching",
+    "compare strings",
+    "natural language",
+    "string similarity",
+    "string comparison"
+  ],
+  "author": {
+    "name": "Kledenai",
+    "email": "me@kledenai.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kledenai/stringwise.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kledenai/stringwise/issues"
+  },
+  "homepage": "https://github.com/kledenai/mathcheck#readme",
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "lint": "eslint src",
+    "start": "node dist/index.js",
+    "prepare": "npm run build",
+    "clean": "rm -rf dist"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.30.1",
+    "@typescript-eslint/parser": "^8.30.1",
+    "eslint": "^9.25.0",
+    "eslint-define-config": "^2.1.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}
