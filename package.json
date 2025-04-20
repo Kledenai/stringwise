@@ -1,6 +1,6 @@
 {
   "name": "stringwise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Efficient and elegant string similarity comparison using bigram analysis. Ideal for fuzzy matching, search optimization, and natural language tools.",
   "keywords": [
